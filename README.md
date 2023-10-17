@@ -2,7 +2,7 @@
 - This is a site with a bot that searches for the nearest cafes, marking them on the map.
 
 <p align="center">
-<img src="https://github.com/Elkarapuzik/--cafes/img/map.PNG" style="width:30%"/>
+<img src="https://github.com/Elkarapuzik/--cafes/blob/main/img/map.PNG" style="width:55%"/>
 </p>
 
 ## How to install
