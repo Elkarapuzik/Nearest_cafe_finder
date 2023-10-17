@@ -1,10 +1,14 @@
 import json
+import os
 from pprint import pprint
 #_________________________=
 import requests
 import folium
 from flask import Flask
 from geopy import distance
+from dotenv import load_dotenv
+#______________________________=
+load_dotenv()
 #________________________________________________________________________________________________#
 
 
@@ -27,21 +31,25 @@ def fetch_coordinates(yandex_geocoder_apikey, address):
 
 
 #________________________________________________________________________________________________#    
-yandex_geocoder_apikey = ('ef14f529-5559-43da-8ee6-5ae1ed765b47')
-#просто ключ от яндекс геоокодера / yandex geocoder key
+yandex_geocoder_apikey = os.getenv('YANDEX_GEOCODER_KEY')
 
 person_location  = input('Где вы находитесь?')
 person_coords = fetch_coordinates(yandex_geocoder_apikey , person_location )
-#Местонахождение человека (безкоорд)/Location of a person(without coordinates)
 
-
+#1 - Просто ключ от яндекс геоокодера / yandex geocoder key
+#2 - Местонахождение человека (безкоорд)/Location of a person(without coordinates)
 #_______________________________________________________________________________
-with open('coffee.json', 'r', encoding='UTF-8') as my_file:
-  file_contents = my_file.read()
-coffee_shops = json.loads(file_contents)#Из текстого формата в формат списка словарей
+try:
+
+    with open('coffee.json', 'r', encoding='UTF-8') as my_file:
+        file_contents = my_file.read()
+    coffee_shops = json.loads(file_contents)
+except FileNotFoundError:
+        print('При запуске не был найден файл "coffee.json"')
+        exit()
+
+#Из текстого формата в формат списка словарей
 #Работа с файлом/Working with a file
-
-
 #_______________________________________________________________________________
 coffee_shops_with_distance = []
 for coffee in coffee_shops:
@@ -55,9 +63,9 @@ for coffee in coffee_shops:
         ).km,
     }
     coffee_shops_with_distance.append(coffee_grab)
+
+
 #Собственный список с кафешками/Own list with cafes
-
-
 #________________________________________________________________________________
 def get_user_posts(user):
     return user['distance']
@@ -66,9 +74,8 @@ distance_sorted_coffee_shops = sorted(
     key=get_user_posts
 )
 five_nearest_coffee_shops = distance_sorted_coffee_shops[0:5] 
+
 #Ближайшая кофейня/Nearest coffee shop
-
-
 #_________________________________________________________________________________
 person_reversed_coords = [person_coords[0],person_coords[1]]
 map = folium.Map(
@@ -131,9 +138,8 @@ folium.Marker(
 ).add_to(map)
 
 map.save('index.html')
+
 #Работа с картой/Work with map
-
-
 #_______________________________________________________________________
 def website():
     with open('index.html', 'r' , encoding ='UTF-8') as file:
@@ -145,4 +151,5 @@ app.add_url_rule('/', 'hello', website)
 
 pprint(five_nearest_coffee_shops)
 app.run('0.0.0.0')
+
 #Работа по созданию локального сайта/Work with local website
