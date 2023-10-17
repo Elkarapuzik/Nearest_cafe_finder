@@ -2,7 +2,7 @@
 - Это сайт с ботом который ищет самые ближайшие кафе, помечая их на карте.
 
 <p align="center">
-<img src="https://github.com/Elkarapuzik/--cafes/img/map.PNG" style="width:30%"/>
+<img src="https://github.com/Elkarapuzik/--cafes/blob/main/img/map.PNG" style="width:55%"/>
 </p>
 
 ## Как установить
